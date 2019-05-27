@@ -17,6 +17,7 @@ class Home extends Component {
     static propTypes = {
         data: array,
         getData: func,
+        getHeros: func,
         loading: bool
     }
     constructor (props) {
@@ -28,18 +29,21 @@ class Home extends Component {
 
     componentDidMount () {
         //Call our action
-        const { getData } = this.props;
-        getData();
+        const { getData, getHeros } = this.props;
+        getHeros();
+        // getData();
     }
 
     renderItem ({ item, index }) {
+        console.log(item);
+        
         return (
             <View style={ styles.row }>
                 <Text style={ styles.title }>
-                    {(parseInt(index) + 1)}{'. '}{item.title}
+                    {(parseInt(index) + 1)}{'. '}{item}
                 </Text>
                 <Text style={ styles.description }>
-                    {item.description}
+                    {item}
                 </Text>
             </View>
         );
