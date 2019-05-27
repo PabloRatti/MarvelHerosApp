@@ -1,18 +1,13 @@
 // Import the component file
-import Home from '../components/home/home';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import MarvelHeader from '../components/MarvelHeader/MarvelHeader';
-import SearchBar from '../components/MarvelHeader/SearchBar';
-import MarvelHeader from '../components/MarvelHeader/MarvelHeader';
-import CharacterList from '../components/CharacterList/CharactersList';
+import { Button, StyleSheet, View } from 'react-native';
 const HomeScreen = ({ navigation }) => (
     <View style={ styles.container }>
-       <Button 
-                title="Boton"
-                onPress={() => navigation.dispatch({type: 'Categories'})} />
-       
+        <Button
+            title="Boton"
+            onPress={ () => navigation.dispatch({ type: 'Categories' }) }
+        />
     </View>
 );
 

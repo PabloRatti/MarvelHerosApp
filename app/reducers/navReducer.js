@@ -20,6 +20,12 @@ const NavReducer = (state = initialNavState, action) => {
             state
         );
         break;
+    case 'Comic':
+        nextState = RootNavigator.router.getStateForAction(
+            NavigationActions.navigate({ routeName: 'Comic' }),
+            state
+        );
+        break;
     default:
         nextState = RootNavigator.router.getStateForAction(action, state);
         break;
