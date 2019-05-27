@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 //import react in our code.
 
-import SearchView from './SearchView';
+import SearchView from '../SearchView/SearchView';
 import {
   Text,
   StyleSheet,

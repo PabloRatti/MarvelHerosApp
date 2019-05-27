@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import HeroCard from './Card';
+import HeroCard from '../Card/Card';
 import {  
     View,
     FlatList,

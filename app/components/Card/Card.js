@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 
 
 export default HeroCard = (props) => {
+    
     return (
         <View style={styles.container}>
 
