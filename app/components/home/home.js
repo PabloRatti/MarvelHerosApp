@@ -12,11 +12,12 @@ import {
 } from 'react-native';
 import React, { Component } from 'react';
 import { array, bool, func } from 'prop-types';
+
 class Home extends Component {
     
     static propTypes = {
         data: array,
-        getData: func,
+        getComicInfo: func,
         getHeros: func,
         loading: bool
     }
@@ -29,21 +30,19 @@ class Home extends Component {
 
     componentDidMount () {
         //Call our action
-        const { getData, getHeros } = this.props;
-        getHeros();
-        // getData();
+        const { getHeros, getComicInfo } = this.props;
+        getComicInfo(2);
+        // getHeros();
     }
 
     renderItem ({ item, index }) {
-        console.log(item);
-        
         return (
             <View style={ styles.row }>
                 <Text style={ styles.title }>
-                    {(parseInt(index) + 1)}{'. '}{item}
+                    {(parseInt(index) + 1)}{'. '}{item.name}
                 </Text>
                 <Text style={ styles.description }>
-                    {item}
+                    {item.name}
                 </Text>
             </View>
         );

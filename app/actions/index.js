@@ -1,50 +1,67 @@
-export const DATA_AVAILABLE = 'DATA_AVAILABLE';
+export const SET_HERO_DATA = 'SET_HERO_DATA';
 
-//Import the sample data
-import Data from '../instructions.json';
-// import herosData from '../database/characters.json';
-/**
- * Make API Call
- * For this example, I will be using the sample data in the json file
- * delay the retrieval [Sample reasons only]
- */
-export function getData () {
+const PUBLIC_KEY = '899feacccd4fb62ba89a58031cb247a0';
+const HASH = '9c6abb7a8435576fb7ce3d23401cd558';
+
+const PRIV_KEY = 'this-should-be-a-long-hash';
+
+export function getHeros (limit) {
+    
+    const urlBase = 'http://gateway.marvel.com/v1/public/characters';
+    const LIMIT = limit ? limit : 10;
     return dispatch => {
-
-        setTimeout(() => {
-            const data  = Data.instructions;
-            dispatch({ data: data, type: DATA_AVAILABLE });
-        }, 2000);
- 
+        try {
+            fetch(`${ urlBase }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }&limit=${ LIMIT }`)
+                .then(response => response.json())
+                .then(myJson => {
+                    const { data } = myJson;
+                    const { results } = data;
+                    const heros = results.map(hero => ({
+                        comics: hero.comics,
+                        description: hero.description,
+                        id: hero.id,
+                        name: hero.name,
+                        thumbnail: {
+                            extension: hero.thumbnail.extension,
+                            path: hero.thumbnail.path
+                        }
+                    }));
+                    dispatch({ data: heros, type: SET_HERO_DATA });
+                });
+        } catch (err) {
+            console.log(err);
+        }
     };
+    
 }
 
-export function getHeros () {
+export function getComicInfo (comicId) {
+
+    const urlBase = `http://gateway.marvel.com/v1/public/comics/${ comicId }`;
     
-    const PRIV_KEY = 'this-should-be-a-long-hash';
-
-    const PUBLIC_KEY = '899feacccd4fb62ba89a58031cb247a0';
-
-    const HASH = '9c6abb7a8435576fb7ce3d23401cd558';
-
-    const urlBase = 'http://gateway.marvel.com/v1/public/characters';
-    const limit = 10;
-
     return dispatch => {
-        fetch(`${ urlBase }?apikey=899feacccd4fb62ba89a58031cb247a0&ts=1&hash=${ HASH }&limit=10`)
-            .then(response => response.json())
-            .then(promise => {
-                const { data } = promise;
-                const { results } = data;
-                const heros = [];
-                results.forEach(hero => {
-                    heros.push(hero.name);
+        try {
+            fetch(`${ urlBase }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }`)
+                .then(response => response.json())
+                .then(myJson => {
+                    const { data } = myJson;
+                    // const { results } = data;
+                    console.log(data);
+                    
+                    // const heros = results.map(hero => ({
+                    //     comics: hero.comics,
+                    //     description: hero.description,
+                    //     id: hero.id,
+                    //     name: hero.name,
+                    //     thumbnail: {
+                    //         extension: hero.thumbnail.extension,
+                    //         path: hero.thumbnail.path
+                    //     }
+                    // }));
+                    // dispatch({ data: heros, type: SET_HERO_DATA });
                 });
-                console.log(heros);
-                dispatch({ data: heros, type: DATA_AVAILABLE });
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        } catch (err) {
+            console.log(err);
+        }
     };
 }
