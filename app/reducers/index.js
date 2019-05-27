@@ -3,8 +3,8 @@ import dataReducer from './dataReducer';
 import nav from './navReducer';
 
 const AppReducer = combineReducers({
-  nav,
-  dataReducer
+    dataReducer,
+    nav
 });
 
 export default AppReducer;

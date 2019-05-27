@@ -1,23 +1,17 @@
-import React from 'react';
+import AppReducer from './app/reducers';
 import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import React from 'react';
 import thunk from 'redux-thunk';
-
-import AppReducer from './app/reducers';
 import { AppNavigator, middleware } from './app/components/appNavigator';
-
+import { applyMiddleware, createStore } from 'redux';
 
 const store = createStore(AppReducer, applyMiddleware(thunk));
 
-class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
+const App = () => (
+    <Provider store={ store }>
         <AppNavigator />
-      </Provider>
-    );
-  }
-}
+    </Provider>
+);
 
 export default App;

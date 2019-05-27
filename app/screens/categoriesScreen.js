@@ -1,31 +1,31 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
 import PropTypes from 'prop-types';
-import {StackNavigator} from 'react-navigation';
+import React from 'react';
+import { StackNavigator } from 'react-navigation';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 const CategoriesScreen = ({ navigation }) => (
-  <View style={styles.container}>
-      <Button
-        title='Back to Home'  
-        onPress={() => navigation.dispatch({ type: 'Home' })}  
-      />
-      <Text> Categories Screen </Text>
+    <View style={ styles.container }>
+        <Button
+            title="Back to Home"
+            onPress={ () => navigation.dispatch({ type: 'Home' }) }
+        />
+        <Text> Categories Screen </Text>
     </View>
 );
 
 CategoriesScreen.propTypes = {
-  navigation: PropTypes.object.isRequired,
+    navigation: PropTypes.object.isRequired
 };
 
 CategoriesScreen.navigationOptions = {
-  title: 'Categories',
+    title: 'Categories'
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFF'
-  },
+    container: {
+        backgroundColor: '#FFFF',
+        flex: 1
+    }
 });
 
 export default CategoriesScreen;

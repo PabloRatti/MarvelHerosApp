@@ -1,8 +1,9 @@
-import HomeScreen from '../screens/homeScreen'
-import CategoriesScreen from '../screens/categoriesScreen'
+import CategoriesScreen from '../screens/categoriesScreen';
+import HomeScreen from '../screens/homeScreen';
 
-const Routes ={
-    Home: { screen: HomeScreen },
-    Categories: { screen: CategoriesScreen}
+const Routes = {
+    Categories: { screen: CategoriesScreen },
+    Home: { screen: HomeScreen }
 };
+
 export default Routes;

@@ -1,31 +1,32 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+// Import the component file
+import Home from '../components/home/home';
 import PropTypes from 'prop-types';
-import Home from '../components/home/home' //Import the component file
+import React from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 const HomeScreen = ({ navigation }) => (
-  <View style={styles.container}>
-    <Button
-        title='Check the categories'  
-        onPress={() => navigation.dispatch({ type: 'Categories' })}  
-    />
-    <Home />
-  </View>
+    <View style={ styles.container }>
+        <Button
+            title="Check the categories"
+            onPress={ () => navigation.dispatch({ type: 'Categories' }) }
+        />
+        <Home />
+    </View>
 );
 
 HomeScreen.propTypes = {
-  navigation: PropTypes.object.isRequired,
+    navigation: PropTypes.object.isRequired
 };
 
 HomeScreen.navigationOptions = {
-  title: 'Home',
+    title: 'Home'
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FF44'
-  },
+    container: {
+        backgroundColor: '#FF44',
+        flex: 1
+    }
 });
 
 export default HomeScreen;

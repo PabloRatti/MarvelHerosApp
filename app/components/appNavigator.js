@@ -1,17 +1,16 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import Routes from '../config/routes';
 import { connect } from 'react-redux';
 import { createStackNavigator } from 'react-navigation';
 import {
-  reduxifyNavigator,
-  createReactNavigationReduxMiddleware,
+    createReactNavigationReduxMiddleware,
+    reduxifyNavigator
 } from 'react-navigation-redux-helpers';
 
-import Routes from '../config/routes';
-
 const middleware = createReactNavigationReduxMiddleware(
-  'root',
-  state => state.nav
+    'root',
+    state => state.nav
 );
 
 const RootNavigator = createStackNavigator(Routes);
@@ -19,7 +18,7 @@ const RootNavigator = createStackNavigator(Routes);
 const AppWithNavigationState = reduxifyNavigator(RootNavigator, 'root');
 
 const mapStateToProps = state => ({
-  state: state.nav,
+    state: state.nav
 });
 
 const AppNavigator = connect(mapStateToProps)(AppWithNavigationState);
