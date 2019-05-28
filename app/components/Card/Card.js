@@ -12,7 +12,7 @@ const HeroCard = props => {
             />
             <View style={ styles.infoContainer }>
                 <View style={ styles.title }>
-                    <Text style={{ fontFamily: 'Cochin', fontSize: 20 }}>{ title }</Text>
+                    <Text style={{ fontSize: 20 }}>{ title }</Text>
                 </View>
                 <View style={ styles.paragraph }>
                     <Text style={{ fontSize: 10 }}>{ description }</Text>
@@ -24,7 +24,7 @@ const HeroCard = props => {
 
 HeroCard.propTypes = {
     description: string,
-    img: image,
+    img: string,
     title: string
 };
 

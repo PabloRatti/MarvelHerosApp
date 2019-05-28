@@ -34,8 +34,8 @@ class Home extends Component {
     componentDidMount () {
         //Call our action
         const { getHeros, getComicInfo, getComicsByHeroId } = this.props;
-        getComicInfo(21366);
-        // getHeros();
+        // getComicInfo(21366);
+        getHeros();
         // getComicsByHeroId(1011334);
     }
 
@@ -119,8 +119,8 @@ class Home extends Component {
                         data={ data }
                         keyExtractor={ (item, index) => index.toString() }
                         ref="listRef"
-                        // renderItem={ this.renderItem }
-                        renderItem={ this.renderComics }
+                        renderItem={ this.renderItem }
+                        // renderItem={ this.renderComics }
                     />
                 </View>
             );

@@ -28,6 +28,8 @@ export const getHeros = limit => {
                         image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
                         name: hero.name
                     }));
+                    // console.log(heros);
+                    
                     dispatch({ data: heros, type: SET_HERO_DATA });
                 });
         } catch (err) {

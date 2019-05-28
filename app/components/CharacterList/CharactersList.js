@@ -1,31 +1,27 @@
+import * as Actions from '../../actions';
 import HeroCard from '../Card/Card';
-import { FlatList, View } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { FlatList, View, Text } from 'react-native';
 import React, { Component } from 'react';
+import { array, func } from 'prop-types';
 
-export default class SearchBar extends Component {
+class CharacterList extends Component {
+    
+    static propTypes = {
+        data: array,
+        getHeros: func
+    }
     constructor (props) {
         super(props);
-        this.state = { isLoading: true, text: '' };
+        this.state = {
+        };
         this.arrayholder = [];
     }
 
     componentDidMount () {
-        return fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(response => response.json())
-            .then(responseJson => {
-                this.setState(
-                    {
-                        isLoading: false,
-                        dataSource: responseJson
-                    },
-                    function () {
-                        this.arrayholder = responseJson;
-                    }
-                );
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        const { getHeros } = this.props;
+        getHeros(50);
     }
 
     SearchFilterFunction (text) {
@@ -60,24 +56,52 @@ export default class SearchBar extends Component {
     };
 
     render () {
-        const { dataSource } = this.props;
+        const { data } = this.props;
+        const { loading } = this.props;
         return (
-            //ListView to show with textinput used as search bar
-            <View style={{ flex: 1 }}>
-                <FlatList
-                    ItemSeparatorComponent={ this.ListViewItemSeparator }
-                    data={ dataSource }
-                    enableEmptySections={ true }
-                    keyExtractor={ (item, index) => index }
-                    renderItem={ ({ item }) => (
-                        <HeroCard
-                            description="Description paragraph here, short description pls..."
-                            img={{ uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png' }}
-                            title={ item.title }
-                        />
-                    ) }
-                />
-            </View>
+            !loading ?
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        ItemSeparatorComponent={ this.ListViewItemSeparator }
+                        data={ data }
+                        enableEmptySections={ true }
+                        keyExtractor={ index => index }
+                        renderItem={ ({ item }) => (
+                            <HeroCard
+                                description={ item.description }
+                                img={{ uri: item.image }}
+                                title={ item.name }
+                            />
+                        ) }
+                    />
+                </View>
+                : <Text> loading data </Text>
         );
     }
 }
+
+/**
+ * The function takes data from the app current state,
+ * and insert/links it into the props of our component.
+ * This function makes Redux know that this component needs to be passed a piece of the state
+ */
+function mapStateToProps (state, props) {
+    return {
+        data: state.dataReducer.data,
+        loading: state.dataReducer.loading
+    };
+}
+/**
+ * Doing this merges our actions into the component’s props,
+ * while wrapping them in dispatch() so that they immediately dispatch an Action.
+ * Just by doing this, we will have access to the actions defined in out actions file (action/home.js)
+ */
+
+function mapDispatchToProps (dispatch) {
+    return bindActionCreators(Actions, dispatch);
+}
+
+//Connect everything
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterList);
+
+// export default CharacterList;
