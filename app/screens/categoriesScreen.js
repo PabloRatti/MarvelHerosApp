@@ -9,10 +9,6 @@ const CategoriesScreen = ({ navigation }) => (
             title="Back to Home"
             onPress={ () => navigation.dispatch({ type: 'Home' }) }
         />
-        <Button
-            title="Back to Home"
-            onPress={ () => navigation.dispatch({ type: 'Comic' }) }
-        />
         <Text> Categories Screen </Text>
     </View>
 );

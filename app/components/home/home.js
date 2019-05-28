@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {
     ActivityIndicator,
     FlatList,
+    Image,
     StyleSheet,
     Text,
     View
@@ -31,11 +32,14 @@ class Home extends Component {
     componentDidMount () {
         //Call our action
         const { getHeros, getComicInfo } = this.props;
-        getComicInfo(2);
-        // getHeros();
+        // getComicInfo(2);
+        getHeros();
     }
 
     renderItem ({ item, index }) {
+        const imageSrc = item.thumbnail.path + '.' + item.thumbnail.extension;
+        console.log(imageSrc);
+        
         return (
             <View style={ styles.row }>
                 <Text style={ styles.title }>
@@ -44,6 +48,20 @@ class Home extends Component {
                 <Text style={ styles.description }>
                     {item.name}
                 </Text>
+                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-start', flexDirection: 'row' }}>
+                    <Image
+                        source={{ uri: imageSrc }}
+                        style={{ height: 58, width: 66 }}
+                    />
+                    <Text style={{
+                        flex: 1,
+                        justifyContent: 'flex-end',
+                        paddingLeft: 10
+                    }}>
+                        { item.description }
+                    </Text>
+                </View>
+                
             </View>
         );
     }

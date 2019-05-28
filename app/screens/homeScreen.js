@@ -1,4 +1,5 @@
 // Import the component file
+import Home from '../components/home/home';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
@@ -8,6 +9,7 @@ const HomeScreen = ({ navigation }) => (
             title="Boton"
             onPress={ () => navigation.dispatch({ type: 'Categories' }) }
         />
+        <Home />
     </View>
 );
 
