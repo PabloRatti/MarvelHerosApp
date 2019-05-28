@@ -19,6 +19,7 @@ class Home extends Component {
     static propTypes = {
         data: array,
         getComicInfo: func,
+        getComicsByHeroId: func,
         getHeros: func,
         loading: bool
     }
@@ -27,19 +28,18 @@ class Home extends Component {
         this.state = {
         };
         this.renderItem = this.renderItem.bind(this);
+        this.renderComics = this.renderComics.bind(this);
     }
 
     componentDidMount () {
         //Call our action
-        const { getHeros, getComicInfo } = this.props;
-        // getComicInfo(2);
-        getHeros();
+        const { getHeros, getComicInfo, getComicsByHeroId } = this.props;
+        getComicInfo(21366);
+        // getHeros();
+        // getComicsByHeroId(1011334);
     }
 
     renderItem ({ item, index }) {
-        const imageSrc = item.thumbnail.path + '.' + item.thumbnail.extension;
-        console.log(imageSrc);
-        
         return (
             <View style={ styles.row }>
                 <Text style={ styles.title }>
@@ -48,7 +48,45 @@ class Home extends Component {
                 <Text style={ styles.description }>
                     {item.name}
                 </Text>
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-start', flexDirection: 'row' }}>
+                <View style={{
+                    alignItems: 'flex-start',
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end'
+                }}>
+                    <Image
+                        source={{ uri: item.image }}
+                        style={{ height: 58, width: 66 }}
+                    />
+                    <Text style={{
+                        flex: 1,
+                        justifyContent: 'flex-end',
+                        paddingLeft: 10
+                    }}>
+                        { item.description }
+                    </Text>
+                </View>
+                
+            </View>
+        );
+    }
+    
+    renderComics ({ item, index }) {
+        // console.log(item);
+        return (
+            <View style={ styles.row }>
+                <Text style={ styles.title }>
+                    {(parseInt(index) + 1)}{'. '}{item.name}
+                </Text>
+                <Text style={ styles.description }>
+                    {item.name}
+                </Text>
+                <View style={{
+                    alignItems: 'flex-start',
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end'
+                }}>
                     <Image
                         source={{ uri: imageSrc }}
                         style={{ height: 58, width: 66 }}
@@ -81,7 +119,8 @@ class Home extends Component {
                         data={ data }
                         keyExtractor={ (item, index) => index.toString() }
                         ref="listRef"
-                        renderItem={ this.renderItem }
+                        // renderItem={ this.renderItem }
+                        renderItem={ this.renderComics }
                     />
                 </View>
             );
