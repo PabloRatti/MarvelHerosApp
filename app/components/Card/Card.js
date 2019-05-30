@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         width: '20%'
     },
     infoContainer: {
-       
+
         flexDirection: 'column',
         height: '95%',
         padding: 5,
@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
     },
     paragraph: {
         alignItems: 'flex-start',
-      
-        height: '60%',
+
+        maxHeight: '60%',
         marginTop: 1,
         padding: 5
     },
     title: {
         alignItems: 'flex-start',
-      
+
         height: '40%',
 
     }

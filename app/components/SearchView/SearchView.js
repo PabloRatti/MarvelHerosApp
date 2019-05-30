@@ -11,7 +11,7 @@ export default SearchView = (props) => {
                 source={props.img}
             />
             <View style={styles.description}>
-                <Text fontFamily="Verdana" style={{padding: 5}}>{props.title}</Text>
+                <Text fontFamily="Verdana" style={{ padding: 5 }}>{props.title}</Text>
             </View>
         </View>
     );
@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
         height: 60
     },
     description: {
-       
+
         alignSelf: 'center',
-    
-        flex:1,
-        padding: 5,         
+
+        flex: 1,
+        padding: 5,
         marginLeft: '5%',
-        
+
     },
     image: {
         alignSelf: 'center',

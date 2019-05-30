@@ -2,7 +2,7 @@ import * as Actions from '../../actions';
 import HeroCard from '../Card/Card';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { FlatList, View, Text,TouchableOpacity } from 'react-native';
+import { FlatList, View, Text, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import { array, func } from 'prop-types';
 
@@ -27,25 +27,24 @@ class CharactersByComic extends Component {
 
     render() {
         const { data, loading, navigation } = this.props;
-              
+
         return (
             !loading ?
-                <View style={styles.container}>                   
-                     <FlatList                       
+                <View style={styles.container}>
+                    <FlatList
                         data={data}
                         enableEmptySections={true}
-                        keyExtractor={ item => item.id.toString() }
+                        keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() =>this.props.navigation.navigate('ComicScreen',{id: item.id,title: item.name})             
+                            <TouchableOpacity onPress={() => navigation.navigate('ComicScreen', { id: item.id, title: item.name })
                             }>
-                              
-                                { <HeroCard
+                                {<HeroCard
                                     key={item.id}
                                     description={item.description}
                                     img={{ uri: item.image }}
                                     title={item.name}
                                     value={item.id}
-                                /> }
+                                />}
                             </TouchableOpacity>
                         )}
                     />
@@ -56,9 +55,9 @@ class CharactersByComic extends Component {
 }
 
 const styles = {
-    container:{
+    container: {
         flex: 1,
-       
+
     }
 
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FlatList,View,Image,Dimensions, Text, TouchableOpacity} from 'react-native';
+import { FlatList, View, Image, Dimensions, Text, TouchableOpacity } from 'react-native';
 import * as Actions from '../../actions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -13,57 +13,57 @@ class ComicsGrid extends Component {
         data: array,
         getComicsByHeroId: func
     }
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
         };
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const { getComicsByHeroId } = this.props;
         getComicsByHeroId(this.props.id);
-        //console.log(getComicsByHeroId(1009610))
+        
     }
-    renderItem = ({item}) => {
-        return( 
-           
-             <View >    
-               <TouchableOpacity onPress = {()=> this.props.navigation.navigate('DetailScreen',{id: item.id, title: item.title} )}>
-                    <Image    
-                        style={{ 
-                        width: (ITEM_WIDTH/2 - 6),
-                        height:350,
-                        margin: 3
+    renderItem = ({ item }) => {
+        return (
+
+            <View >
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('DetailScreen', { id: item.id, title: item.title })}>
+                    <Image
+                        style={{
+                            width: (ITEM_WIDTH / 2 - 6),
+                            height: 350,
+                            margin: 3
                         }}
-                        source={{uri: item.image}}
-                    />                    
-               </TouchableOpacity>
-           </View> 
+                        source={{ uri: item.image }}
+                    />
+                </TouchableOpacity>
+            </View>
         );
     };
-    
+
     render() {
         const { data } = this.props;
         console.log(data)
         const { loading } = this.props;
         return (
-           !loading ?
-            <View style ={{flex: 1}}>                
-                <FlatList                 
-                data = {data}   
-                            
-                renderItem={this.renderItem}
-                numColumns={2}
-                keyExtractor={item => item.id.toString()}
-                />
-            </View> : <Text>Loading.....</Text>
-            
+            !loading ?
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        data={data}
+
+                        renderItem={this.renderItem}
+                        numColumns={2}
+                        keyExtractor={item => item.id.toString()}
+                    />
+                </View> : <Text>Loading.....</Text>
+
         );
     }
 }
 
 
-function mapStateToProps (state, props) {
+function mapStateToProps(state, props) {
     return {
         data: state.dataReducer.data,
         loading: state.dataReducer.loading
@@ -71,11 +71,11 @@ function mapStateToProps (state, props) {
 }
 
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
     return bindActionCreators(Actions, dispatch);
 }
 
-//Connect everything
+
 export default connect(mapStateToProps, mapDispatchToProps)(ComicsGrid);
 
 

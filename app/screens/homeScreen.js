@@ -1,7 +1,7 @@
 // Import the component file
 import CharacterList from '../components/CharacterList/CharactersList';
 import Home from '../components/home/home';
-import  MarvelHeader  from '../components/MarvelHeader/MarvelHeader';
+import MarvelHeader from '../components/MarvelHeader/MarvelHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SearchBar from '../components/SearchBar/SearchBar';
@@ -9,13 +9,13 @@ import SearchBar from '../components/SearchBar/SearchBar';
 import { Button, StyleSheet, View } from 'react-native';
 
 const HomeScreen = ({ navigation }) => (
-    <View style={ styles.container }> 
-        
-        <MarvelHeader />     
-        <SearchBar navigation = {navigation}/>
-        <CharacterList 
-            navigation = {navigation}            
-            />
+    <View style={styles.container}>
+
+        <MarvelHeader />
+        <SearchBar navigation={navigation} />
+        <CharacterList
+            navigation={navigation}
+        />
     </View>
 );
 
@@ -24,7 +24,7 @@ HomeScreen.propTypes = {
 };
 
 HomeScreen.navigationOptions = {
-   // title: 'HomeScreen',
+    // title: 'HomeScreen',
     header: null
 };
 

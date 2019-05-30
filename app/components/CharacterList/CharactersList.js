@@ -16,6 +16,7 @@ class CharacterList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            indexGeter: 0
         };
     }
 
@@ -25,17 +26,23 @@ class CharacterList extends Component {
     }
 
     render() {
-        const { initialHerosData, loading, navigation } = this.props;
+        const { initialHerosData, loading, navigation, getHeros } = this.props;
 
         return (
             !loading ?
                 <View style={{ flex: 1 }}>
                     <FlatList
+                        onEndReached={() => {
+                            this.setState({ indexGeter: this.state.indexGeter + 100 });
+                            getHeros(100, this.state.indexGeter)
+                        }
+
+                        }
                         data={initialHerosData}
                         enableEmptySections={true}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ComicScreen', { id: item.id, title: item.name })
+                            <TouchableOpacity onPress={() => navigation.navigate('ComicScreen', { id: item.id, title: item.name })
                             }>
                                 <HeroCard
                                     key={item.id}

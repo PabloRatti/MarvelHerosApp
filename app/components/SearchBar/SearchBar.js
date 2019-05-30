@@ -1,140 +1,122 @@
-
-import React, { Component } from 'react';
-import { array, func } from 'prop-types';
-import { connect } from 'react-redux';
 import * as Actions from '../../actions';
 import SearchView from '../SearchView/SearchView';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  View,
   FlatList,
-  TextInput
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
-
-//import all the components we are going to use.
+import React, { Component } from 'react';
+import { array, func, object } from 'prop-types';
 
 class SearchBar extends Component {
   static propTypes = {
-    initialHerosData: array,
-    getHeros: func
+    getSearchBarHeros: func,
+    navigation: object,
+    searchResultsHerosData: array
   }
   constructor(props) {
     super(props);
-    //setting default state
-    this.state = { visibility: false, isLoading: true, text: '' };
+    this.state = {
+      text: '',
+      visibility: false
+    };
     this.arrayholder = [];
   }
 
   textHandler(text) {
     this.setState({
-      text: text,
+      text
     });
   }
 
-  componentDidMount() {
-    const { getHeros } = this.props;
-    getHeros(50);
-  }
-
-  SearchFilterFunction = (text) => {
-    const {  initialHerosData } = this.props;
-    const arrayholder = [... initialHerosData];
-    //passing the inserted text in textinput
-    const newData = arrayholder.filter((item) => {
-      //applying filter for the inserted text in search bar
-      const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
-      if (item.name) hasTitle = true;
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    this.setState({
-      //setting the filtered newData on datasource
-      //After setting the data it will automatically re-render the view
-      dataSource: newData,
-    });
-
+  SearchFilterFunction = text => {
+    const { getSearchBarHeros } = this.props;
+    if (text.length > 1) {
+      getSearchBarHeros(text);
+    }
   }
 
   visibilityHandler() {
-    let aux = this.state.visibility;
-    this.setState({ visibility: !aux });
+    const { visibility } = this.state;
+    this.setState({ visibility: !visibility });
   }
 
-
   render() {
-    const { data } = this.props;
-    const { loading } = this.props;
+    const { navigation, searchResultsHerosData } = this.props;
+    const { text } = this.state;
+
+    console.log(searchResultsHerosData);
+
     return (
-      //ListView to show with textinput used as search bar
       <View style={styles.viewStyle}>
 
         <TextInput
-          underlineColorAndroid='transparent'
+          placeholder={'Search characters...'}
           style={styles.textInputStyle}
-          onChangeText={(text) => {
-            this.textHandler(text)
-           
-              this.SearchFilterFunction(text)
+          underlineColorAndroid="transparent"
+          value={text}
+          onChangeText={text => {
+            this.textHandler(text);
+            this.SearchFilterFunction(text);
           }}
-          value={this.state.text}
-          placeholder={"Search characters..."}
         />
 
-
-        {this.state.text.length > 2 ?
-          <View style={styles.list}>
-            <FlatList
-              data={this.state.dataSource}
-              keyExtractor={ item => item.id.toString() }
-              ItemSeparatorComponent={this.ListViewItemSeparator}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('ComicScreen',{id: item.id, title: item.name})  }>
-                  <SearchView
-                    key={item.id}                   
-                    img={{ uri: item.image }}
-                    title={item.name} />
-                </TouchableOpacity>
-              )}
-       
-            /></View> : null}
-
+        {
+          text.length >= 3 ?
+            <View style={styles.list}>
+              {searchResultsHerosData.length>0 ?
+                <FlatList
+                  ItemSeparatorComponent={this.ListViewItemSeparator}
+                  data={searchResultsHerosData}
+                  keyExtractor={item => item.id.toString()}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => navigation.navigate('ComicScreen', { id: item.id, title: item.name })}>
+                      <SearchView
+                        img={{ uri: item.image }}
+                        key={item.id}
+                        title={item.name} />
+                    </TouchableOpacity>
+                  )}
+                />
+                : <View style={{backgroundColor: '#DFEEEE'}}><Text>No results</Text></View>}
+            </View> : null}
       </View>
     );
   }
 }
 
-
 const styles = StyleSheet.create({
-  viewStyle: {
-    maxHeight: '30%',
-    zIndex: 1,
-  },
-  textStyle: {
-    padding: 10,
+  list: {
+    backgroundColor: '#DFEEEE',
+    borderColor: 'gray',
+    borderWidth: 3
   },
   textInputStyle: {
+    backgroundColor: '#212121',
     color: 'white',
-    height:45,
-    paddingLeft: 10,
-    backgroundColor:'#212121'
+    height: 45,
+    paddingLeft: 10
   },
-  list: {
-    borderColor: 'black',
-    borderWidth: 1,
-
+  textStyle: {
+    padding: 10
+  },
+  viewStyle: {
+    maxHeight: '30%',
+    zIndex: 1
   }
 });
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   return {
-    initialHerosData: state.dataReducer.initialHerosData,
-    loading: state.dataReducer.loading
+    loading: state.dataReducer.loading,
+    searchResultsHerosData: state.dataReducer.searchResultsHerosData
   };
 }
-
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch);
 }

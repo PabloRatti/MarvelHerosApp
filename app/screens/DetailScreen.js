@@ -3,7 +3,7 @@ import DescriptionHeader from '../components/DescriptionHeader/DescriptionHeader
 import FullDescription from '../components/FullDescription/FullDescription';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, View, Text,ScrollView} from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import CharactersByComic from '../components/CharactersByComic/CharactersByComic';
 
 class DetailScreen extends React.Component {
