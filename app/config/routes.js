@@ -4,7 +4,7 @@ import HomeScreen from '../screens/homeScreen';
 
 const Routes = {
     Categories: { screen: CategoriesScreen },
-    Comic: { screen: ComicScreen },
+    ComicScreen: { screen: ComicScreen },
     Home: { screen: HomeScreen }
 };
 

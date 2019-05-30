@@ -1,18 +1,18 @@
 import React from 'react';
-import { StyleSheet,View,} from 'react-native';
+import { StyleSheet,View,Button} from 'react-native';
 import PropTypes from 'prop-types';
 import Home from '../components/home/home' //Import the component file
 import ComicsGrid from '../components/ComicsGrid/ComicsGrid'
 import HeaderMarvel from '../components/HeaderMarvel/HeaderMarvel'
 import DescriptionHeader from '../components/DescriptionHeader/DescriptionHeader'
 
-const HomeScreen = ({  }) => (
+const ComicScreen = ({ navigation }) => (
   
   <View style={styles.container}>
     <HeaderMarvel/>  
-    <DescriptionHeader/>    
-    <ComicsGrid />
-  </View>
+    <DescriptionHeader navigation={navigation}/>    
+    <ComicsGrid />    
+    </View>
 );
 
 
@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
   },
 });
 
-HomeScreen.navigationOptions =  { header: null};
+ComicScreen.navigationOptions =  { title: 'ComicScreen', header: null};
 
-export default HomeScreen;
+export default ComicScreen;

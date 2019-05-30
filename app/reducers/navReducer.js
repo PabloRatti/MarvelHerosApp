@@ -20,9 +20,9 @@ const NavReducer = (state = initialNavState, action) => {
             state
         );
         break;
-    case 'Comic':
+    case 'ComicScreen':
         nextState = RootNavigator.router.getStateForAction(
-            NavigationActions.navigate({ routeName: 'Comic' }),
+            NavigationActions.navigate({ routeName: 'ComicScreen' }),
             state
         );
         break;

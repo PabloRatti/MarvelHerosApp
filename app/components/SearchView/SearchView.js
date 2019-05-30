@@ -1,7 +1,8 @@
 import { StyleSheet, View, Text, Image } from 'react-native';
 import React, { Component } from 'react';
-export default SearchView = (props) => {
 
+
+export default SearchView = (props) => {
     return (
 
         <View style={styles.viewStyle}>
@@ -10,11 +11,9 @@ export default SearchView = (props) => {
                 source={props.img}
             />
             <View style={styles.description}>
-                <Text style={{padding: 5}}>{props.description}</Text>
+                <Text fontFamily="Verdana" style={{padding: 5}}>{props.title}</Text>
             </View>
         </View>
-
-
     );
 
 }

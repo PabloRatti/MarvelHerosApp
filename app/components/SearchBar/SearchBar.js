@@ -1,10 +1,13 @@
 
 import React, { Component } from 'react';
-//import react in our code.
-
+import { array, func } from 'prop-types';
+import { connect } from 'react-redux';
+import * as Actions from '../../actions';
 import SearchView from '../SearchView/SearchView';
+import { bindActionCreators } from 'redux';
 import {
   Text,
+  TouchableOpacity,
   StyleSheet,
   View,
   FlatList,
@@ -13,31 +16,16 @@ import {
 
 //import all the components we are going to use.
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
+  static propTypes = {
+    initialHerosData: array,
+    getHeros: func
+  }
   constructor(props) {
     super(props);
     //setting default state
     this.state = { visibility: false, isLoading: true, text: '' };
     this.arrayholder = [];
-  }
-
-  componentDidMount() {
-    return fetch('https://jsonplaceholder.typicode.com/posts')
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            isLoading: false,
-            dataSource: responseJson
-          },
-          function () {
-            this.arrayholder = responseJson;
-          }
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
   }
 
   textHandler(text) {
@@ -46,61 +34,39 @@ export default class SearchBar extends Component {
     });
   }
 
-  SearchFilterFunction = (text) => {
+  componentDidMount() {
+    const { getHeros } = this.props;
+    getHeros(50);
+  }
 
+  SearchFilterFunction = (text) => {
+    const {  initialHerosData } = this.props;
+    const arrayholder = [... initialHerosData];
     //passing the inserted text in textinput
-    const newData = this.arrayholder.filter((item) => {
+    const newData = arrayholder.filter((item) => {
       //applying filter for the inserted text in search bar
-      const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
-      if (item.title) hasTitle = true;
+      const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+      if (item.name) hasTitle = true;
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
     });
-    if (newData != -1) {
-      this.setState({
-        //setting the filtered newData on datasource
-        //After setting the data it will automatically re-render the view
-        dataSource: newData,
-      });
-    }
-
-
-
-
-
+    this.setState({
+      //setting the filtered newData on datasource
+      //After setting the data it will automatically re-render the view
+      dataSource: newData,
+    });
 
   }
-
-
-
-  ListViewItemSeparator = () => {
-    //Item sparator view
-    return (
-      <View
-        style={{
-          height: 0.3,
-          width: '90%',
-          backgroundColor: '#080808',
-        }}
-      />
-    );
-  };
 
   visibilityHandler() {
     let aux = this.state.visibility;
     this.setState({ visibility: !aux });
   }
 
-  renderItem = ({ item }) => (
-
-         <SearchView img={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
-                      description={item.title}/>
-      
-   
-  )
 
   render() {
-
+    const { data } = this.props;
+    const { loading } = this.props;
     return (
       //ListView to show with textinput used as search bar
       <View style={styles.viewStyle}>
@@ -110,26 +76,38 @@ export default class SearchBar extends Component {
           style={styles.textInputStyle}
           onChangeText={(text) => {
             this.textHandler(text)
-            if (this.state.text.length > 2) this.SearchFilterFunction(text)
+           
+              this.SearchFilterFunction(text)
           }}
           value={this.state.text}
-          placeholder="Search characters..."
+          placeholder={"Search characters..."}
         />
 
 
         {this.state.text.length > 2 ?
-
           <View style={styles.list}>
             <FlatList
               data={this.state.dataSource}
+              keyExtractor={ item => item.id.toString() }
               ItemSeparatorComponent={this.ListViewItemSeparator}
-              renderItem={this.renderItem}
-              keyExtractor={(item, index) => index}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('ComicScreen',{id: item.id, title: item.name})  }>
+                  <SearchView
+                    key={item.id}
+                    onPress={() => navigation.dispatch({ type: 'ComicScreen' })}
+                    img={{ uri: item.image }}
+                    title={item.name} />
+                </TouchableOpacity>
+              )}
+       
             /></View> : null}
+
       </View>
     );
   }
 }
+
+
 const styles = StyleSheet.create({
   viewStyle: {
     maxHeight: '30%',
@@ -146,6 +124,19 @@ const styles = StyleSheet.create({
   list: {
     borderColor: 'black',
     borderWidth: 1,
-    backgroundColor: 'lightgray',
+
   }
 });
+
+function mapStateToProps(state, props) {
+  return {
+    initialHerosData: state.dataReducer.initialHerosData,
+    loading: state.dataReducer.loading
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

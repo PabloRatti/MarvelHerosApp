@@ -7,11 +7,14 @@ import React from 'react';
 import SearchBar from '../components/SearchBar/SearchBar';
 
 import { Button, StyleSheet, View } from 'react-native';
+
 const HomeScreen = ({ navigation }) => (
-    <View style={ styles.container }>
-        <MarvelHeader />
-        <SearchBar />
-        <CharacterList />
+    <View style={ styles.container }> 
+        <MarvelHeader />     
+        <SearchBar navigation = {navigation}/>
+        <CharacterList 
+            navigation = {navigation}            
+            />
     </View>
 );
 
@@ -20,7 +23,7 @@ HomeScreen.propTypes = {
 };
 
 HomeScreen.navigationOptions = {
-    // title: 'Home'
+    title: 'Home',
     header: null
 };
 
