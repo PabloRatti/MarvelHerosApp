@@ -1,21 +1,28 @@
 import React from 'react';
-import { StyleSheet,View,Button} from 'react-native';
-import PropTypes from 'prop-types';
-import Home from '../components/home/home' //Import the component file
-import ComicsGrid from '../components/ComicsGrid/ComicsGrid'
-import HeaderMarvel from '../components/HeaderMarvel/HeaderMarvel'
-import DescriptionHeader from '../components/DescriptionHeader/DescriptionHeader'
+import { StyleSheet,View,Text} from 'react-native';
+import ComicsGrid from '../components/ComicsGrid/ComicsGrid';
+import MarvelHeader from '../components/MarvelHeader/MarvelHeader';
+import DescriptionHeader from '../components/DescriptionHeader/DescriptionHeader';
 
-const ComicScreen = ({ navigation }) => (
-  
-  <View style={styles.container}>
-    <HeaderMarvel/>  
-    <DescriptionHeader navigation={navigation}/>    
-    <ComicsGrid />    
+export default class ComicScreen extends React.Component{
+  constructor (props) {
+    super(props);
+    this.state = {
+    };
+}
+render(){    
+  const {navigation}  = this.props;
+  const id = navigation.getParam('id','default');
+  const title = navigation.getParam('title','default');
+  return(
+    <View style={styles.container}>
+      <MarvelHeader/>  
+      <DescriptionHeader navigation = {navigation} subtitle = {'Comic List'} title = {title}/>    
+      <ComicsGrid navigation = {navigation} id = {id}/>
     </View>
-);
-
-
+  )
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -24,6 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-ComicScreen.navigationOptions =  { title: 'ComicScreen', header: null};
-
-export default ComicScreen;
+ComicScreen.navigationOptions =  { header: null};

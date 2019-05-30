@@ -1,22 +1,22 @@
 import { NavigationActions } from 'react-navigation';
 import { RootNavigator } from '../components/appNavigator';
 
-const firstAction = RootNavigator.router.getActionForPathAndParams('Home');
+const firstAction = RootNavigator.router.getActionForPathAndParams('DetailScreen');
 const tempNavState = RootNavigator.router.getStateForAction(firstAction);
 const initialNavState = RootNavigator.router.getStateForAction(tempNavState);
 
 const NavReducer = (state = initialNavState, action) => {
     let nextState;
     switch (action.type) {
-    case 'Home':
+    case 'HomeScreen':
         nextState = RootNavigator.router.getStateForAction(
-            NavigationActions.navigate({ routeName: 'Home' }),
+            NavigationActions.navigate({ routeName: 'HomeScreen' }),
             state
         );
         break;
-    case 'Categories':
+    case 'DetailScreen':
         nextState = RootNavigator.router.getStateForAction(
-            NavigationActions.navigate({ routeName: 'Categories' }),
+            NavigationActions.navigate({ routeName: 'DetailScreen' }),
             state
         );
         break;

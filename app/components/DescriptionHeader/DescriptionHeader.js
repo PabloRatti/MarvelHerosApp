@@ -22,8 +22,8 @@ export default class DescriptionHeader extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{width:'80%',justifyContent : 'space-evenly'}}>
-                    <Text style={{fontSize: 20,marginLeft:'auto',marginRight:'auto',color:'#fff'}}>Heroe seleccionado</Text>
-                    <Text style={{fontSize: 15,marginLeft:'auto',marginRight:'auto',color:'#fff'}}>Comic List</Text>         
+                    <Text style={{fontSize: 20,marginLeft:'auto',marginRight:'auto',color:'#fff'}}>{this.props.title}</Text>
+                    <Text style={{fontSize: 15,marginLeft:'auto',marginRight:'auto',color:'#fff'}}>{this.props.subtitle}</Text>         
                 </View>
             </View>
         )

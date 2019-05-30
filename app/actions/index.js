@@ -1,17 +1,17 @@
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
 export const SET_RESULTS_DATA = 'SET_RESULTS_DATA';
+export const SET_COMICS_DATA = 'SET_COMICS_DATA';
+export const SET_COMIC_DATA = 'SET_COMIC_DATA';
+export const SET_COMICSBYID_DATA = 'SET_COMICSBYID_DATA';
 
 const PUBLIC_KEY = '899feacccd4fb62ba89a58031cb247a0';
 const HASH = '9c6abb7a8435576fb7ce3d23401cd558';
 
-const PRIV_KEY = 'this-should-be-a-long-hash';
-
-export const getHeros = limit => {
+export const getHeros = (limit = 10) => {
     const urlBase = 'http://gateway.marvel.com/v1/public/characters';
-    const LIMIT = limit ? limit : 10;
     return dispatch => {
         try {
-            fetch(`${ urlBase }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }&limit=${ LIMIT }`)
+            fetch(`${ urlBase }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }&limit=${ limit }`)
                 .then(response => {
                     const contentType = response.headers.get('content-type');
                     if (contentType && contentType.indexOf('application/json') !== -1) {
@@ -70,11 +70,32 @@ export const getComicInfo = comicId => {
                 .then(response => response.json())
                 .then(myJson => {
                     const { data: { results: [results] } } = myJson;
+
+                    const artists = [];
+                    const artistAux = [];
+                    const writerAux = [];
+                    const writers = results.creators.items.filter(item => {
+                        if (item.role === 'writer') {
+                            writerAux.push(item.name);
+                            return item;
+                        } else {
+                            artistAux.push(item.name);
+                            artists.push(item);
+                        }
+                    });
+                    
                     const comicInfo = {
+                        artistString: artistAux.toString(),
+                        artists,
+                        characters: results.characters.items,
                         description: results.description,
-                        image: results.thumbnail.path + '.' + results.thumbnail.extension,
-                        title: results.title
+                        onSaleData: results.dates[0].date,
+                        title: results.title,
+                        writerString: writerAux.toString(),
+                        writers
                     };
+                    console.log(comicInfo);
+                    
                     dispatch({ data: comicInfo, type: SET_COMIC_DATA });
                 });
         } catch (err) {
@@ -83,6 +104,37 @@ export const getComicInfo = comicId => {
     };
 };
 
+export const getHerosByComicId = comicId => {
+    const urlBase = 'http://gateway.marvel.com/v1/public/characters';
+    
+    return dispatch => {
+        try {
+            fetch(`${ urlBase }?comics=${comicId}&apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }`)
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.indexOf('application/json') !== -1) {
+                        return response.json();
+                    }
+                })
+                .then(myJson => {
+                    const { data } = myJson;
+                    const { results } = data;
+                    const heros = results.map(hero => ({
+                        description: hero.description,
+                        id: hero.id,
+                        image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
+                        name: hero.name
+                    }));
+                    // console.log(heros);
+                    
+                    dispatch({ data: heros, type: SET_COMICSBYID_DATA });
+                });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    
+};
 
 export const getComicsByHeroId = heroId => {
     const urlBase = `http://gateway.marvel.com/v1/public/characters/${ heroId }/comics`;
@@ -95,10 +147,11 @@ export const getComicsByHeroId = heroId => {
                     const { results } = data;
                     const comicsByHero = results.map(comic => ({
                         image: comic.thumbnail.path + '.' + comic.thumbnail.extension,
-                        title: comic.title
+                        title: comic.title,
+                        id: comic.id
                     }));
                     console.log(comicsByHero);
-                    dispatch({ data: data, type: SET_COMIC_DATA });
+                     dispatch({ data: comicsByHero, type: SET_COMICS_DATA });
                 });
         } catch (err) {
             console.log(err);

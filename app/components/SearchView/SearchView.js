@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
         height: 60
     },
     description: {
-        borderColor: 'black',
+       
         alignSelf: 'center',
-        borderWidth: 0.5,
+    
         flex:1,
         padding: 5,         
         marginLeft: '5%',

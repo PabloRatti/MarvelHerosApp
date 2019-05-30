@@ -93,8 +93,7 @@ class SearchBar extends Component {
               renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ComicScreen',{id: item.id, title: item.name})  }>
                   <SearchView
-                    key={item.id}
-                    onPress={() => navigation.dispatch({ type: 'ComicScreen' })}
+                    key={item.id}                   
                     img={{ uri: item.image }}
                     title={item.name} />
                 </TouchableOpacity>
@@ -117,9 +116,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   textInputStyle: {
-
+    color: 'white',
+    height:45,
     paddingLeft: 10,
-    backgroundColor: '#575B5E',
+    backgroundColor:'#212121'
   },
   list: {
     borderColor: 'black',

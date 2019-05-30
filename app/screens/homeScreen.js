@@ -10,6 +10,7 @@ import { Button, StyleSheet, View } from 'react-native';
 
 const HomeScreen = ({ navigation }) => (
     <View style={ styles.container }> 
+        
         <MarvelHeader />     
         <SearchBar navigation = {navigation}/>
         <CharacterList 
@@ -23,7 +24,7 @@ HomeScreen.propTypes = {
 };
 
 HomeScreen.navigationOptions = {
-    title: 'Home',
+   // title: 'HomeScreen',
     header: null
 };
 
