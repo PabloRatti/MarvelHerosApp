@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-import React from 'react';
 import Routes from '../config/routes';
 import { connect } from 'react-redux';
 import { createStackNavigator } from 'react-navigation';

@@ -7,60 +7,57 @@ export const SET_COMICSBYID_DATA = 'SET_COMICSBYID_DATA';
 const PUBLIC_KEY = '899feacccd4fb62ba89a58031cb247a0';
 const HASH = '9c6abb7a8435576fb7ce3d23401cd558';
 
-export const getHeros = (limit = 10) => {
-    const urlBase = 'http://gateway.marvel.com/v1/public/characters';
-    return dispatch => {
-        try {
-            fetch(`${ urlBase }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }&limit=${ limit }`)
-                .then(response => {
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.indexOf('application/json') !== -1) {
-                        return response.json();
-                    }
-                })
-                .then(myJson => {
-                    const { data: { results } } = myJson;
-                    const heros = results.map(hero => ({
-                        comics: hero.comics,
-                        description: hero.description,
-                        id: hero.id,
-                        image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
-                        name: hero.name
-                    }));
-                    dispatch({ data: heros, type: SET_INITIAL_DATA });
-                });
-        } catch (err) {
-            console.log(err);
-        }
-    };
-};
+const herosBaseUrl = 'http://gateway.marvel.com/v1/public/characters';
 
-export const getSearchBarHeros = nameStartsWith => {
-    const urlBase = 'http://gateway.marvel.com/v1/public/characters';
-    return dispatch => {
-        try {
-            fetch(`${ urlBase }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }&limit=5&nameStartsWith=${ nameStartsWith }`)
-                .then(response => {
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.indexOf('application/json') !== -1) {
-                        return response.json();
-                    }
-                })
-                .then(myJson => {
-                    const { data: { results } } = myJson;
-                    const heros = results.map(hero => ({
-                        comics: hero.comics,
-                        id: hero.id,
-                        image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
-                        name: hero.name
-                    }));
-                    dispatch({ data: heros, type: SET_RESULTS_DATA });
-                });
-        } catch (err) {
-            console.log(err);
-        }
-    };
-};
+export const getHeros = (limit = 10) => (dispatch => {
+    try {
+        fetch(`${ herosBaseUrl }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }&limit=${ limit }`)
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                    return response.json();
+                }
+            })
+            .then(myJson => {
+                const { data: { results } } = myJson;
+                
+                const heros = results.map(hero => ({
+                    comics: hero.comics,
+                    description: hero.description,
+                    id: hero.id,
+                    image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
+                    name: hero.name
+                }));
+                dispatch({ data: heros, type: SET_INITIAL_DATA });
+            });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+export const getSearchBarHeros = nameStartsWith => (dispatch => {
+    try {
+        fetch(`${ herosBaseUrl }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }&limit=5&nameStartsWith=${ nameStartsWith }`)
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                    return response.json();
+                }
+            })
+            .then(myJson => {
+                const { data: { results } } = myJson;
+                const heros = results.map(hero => ({
+                    comics: hero.comics,
+                    id: hero.id,
+                    image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
+                    name: hero.name
+                }));
+                dispatch({ data: heros, type: SET_RESULTS_DATA });
+            });
+    } catch (err) {
+        console.log(err);
+    }
+});
 
 export const getComicInfo = comicId => {
     const urlBase = `http://gateway.marvel.com/v1/public/comics/${ comicId }`;
@@ -83,7 +80,6 @@ export const getComicInfo = comicId => {
                             artists.push(item);
                         }
                     });
-                    
                     const comicInfo = {
                         artistString: artistAux.toString(),
                         artists,
@@ -94,8 +90,6 @@ export const getComicInfo = comicId => {
                         writerString: writerAux.toString(),
                         writers
                     };
-                    console.log(comicInfo);
-                    
                     dispatch({ data: comicInfo, type: SET_COMIC_DATA });
                 });
         } catch (err) {
@@ -104,40 +98,32 @@ export const getComicInfo = comicId => {
     };
 };
 
-export const getHerosByComicId = comicId => {
-    const urlBase = 'http://gateway.marvel.com/v1/public/characters';
-    
-    return dispatch => {
-        try {
-            fetch(`${ urlBase }?comics=${comicId}&apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }`)
-                .then(response => {
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.indexOf('application/json') !== -1) {
-                        return response.json();
-                    }
-                })
-                .then(myJson => {
-                    const { data } = myJson;
-                    const { results } = data;
-                    const heros = results.map(hero => ({
-                        description: hero.description,
-                        id: hero.id,
-                        image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
-                        name: hero.name
-                    }));
-                    // console.log(heros);
-                    
-                    dispatch({ data: heros, type: SET_COMICSBYID_DATA });
-                });
-        } catch (err) {
-            console.log(err);
-        }
-    };
-    
-};
+export const getHerosByComicId = comicId => (dispatch => {
+    try {
+        fetch(`${ herosBaseUrl }?comics=${ comicId }&apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }`)
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                    return response.json();
+                }
+            })
+            .then(myJson => {
+                const { data: { results } } = myJson;
+                const heros = results.map(hero => ({
+                    description: hero.description,
+                    id: hero.id,
+                    image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
+                    name: hero.name
+                }));
+                dispatch({ data: heros, type: SET_COMICSBYID_DATA });
+            });
+    } catch (err) {
+        console.log(err);
+    }
+});
 
 export const getComicsByHeroId = heroId => {
-    const urlBase = `http://gateway.marvel.com/v1/public/characters/${ heroId }/comics`;
+    const urlBase = `${ herosBaseUrl }/${ heroId }/comics`;
     return dispatch => {
         try {
             fetch(`${ urlBase }?apikey=${ PUBLIC_KEY }&ts=1&hash=${ HASH }`)
@@ -146,12 +132,11 @@ export const getComicsByHeroId = heroId => {
                     const { data } = myJson;
                     const { results } = data;
                     const comicsByHero = results.map(comic => ({
+                        id: comic.id,
                         image: comic.thumbnail.path + '.' + comic.thumbnail.extension,
-                        title: comic.title,
-                        id: comic.id
+                        title: comic.title
                     }));
-                    console.log(comicsByHero);
-                     dispatch({ data: comicsByHero, type: SET_COMICS_DATA });
+                    dispatch({ data: comicsByHero, type: SET_COMICS_DATA });
                 });
         } catch (err) {
             console.log(err);

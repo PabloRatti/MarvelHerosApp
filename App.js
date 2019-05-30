@@ -1,9 +1,8 @@
+import { AppNavigator } from './app/components/appNavigator';
 import AppReducer from './app/reducers';
-import { AppRegistry } from 'react-native';
 import { Provider } from 'react-redux';
 import React from 'react';
 import thunk from 'redux-thunk';
-import { AppNavigator, middleware } from './app/components/appNavigator';
 import { applyMiddleware, createStore } from 'redux';
 
 const store = createStore(AppReducer, applyMiddleware(thunk));
