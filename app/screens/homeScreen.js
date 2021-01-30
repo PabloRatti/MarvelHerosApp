@@ -1,16 +1,21 @@
 // Import the component file
+import CharacterList from '../components/CharacterList/CharactersList';
 import Home from '../components/home/home';
+import MarvelHeader from '../components/MarvelHeader/MarvelHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import SearchBar from '../components/SearchBar/SearchBar';
+
+import { Button, StyleSheet, View } from 'react-native';
 
 const HomeScreen = ({ navigation }) => (
-    <View style={ styles.container }>
-        <Button
-            title="Check the categories"
-            onPress={ () => navigation.dispatch({ type: 'Categories' }) }
+    <View style={styles.container}>
+
+        <MarvelHeader />
+        <SearchBar navigation={navigation} />
+        <CharacterList
+            navigation={navigation}
         />
-        <Home />
     </View>
 );
 
@@ -19,12 +24,13 @@ HomeScreen.propTypes = {
 };
 
 HomeScreen.navigationOptions = {
-    title: 'Home'
+    // title: 'HomeScreen',
+    header: null
 };
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FF44',
+        backgroundColor: '#FAFAFA',
         flex: 1
     }
 });
